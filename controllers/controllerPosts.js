@@ -1,17 +1,14 @@
 //creo posts che contiene tutti i post dell'array dentro posts.js
-const posts = require('../data/db.js');
+const connection = require('../data/db.js');
 
 //creo la funzione index che contiene la lista di tutti i post
 const index = (req, res) => {
-  let tagsArray = [];
-  if (req['query']['tags'] != undefined) {
-    tagsArray = posts.filter((item) => item['tags'].includes(req['query']['tags'].toLowerCase()))
-  }
-  else {
-    tagsArray = posts;
-  }
+  const sql = 'SELECT * FROM posts';
 
-  res.json(tagsArray);
+  connection.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: 'Errore: ' + err });
+    res.json(results);
+  })
 }
 
 //creo la funzione show che contiene tutti i dettagli del post preso in oggetto
