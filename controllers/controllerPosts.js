@@ -13,17 +13,14 @@ const index = (req, res) => {
 
 //creo la funzione show che contiene tutti i dettagli del post preso in oggetto
 const show = (req, res) => {
-  const id = req['params']['id'];
+  const id = parseInt(req.params.id)
 
-  const postId = posts.find((item) => item['id'] === parseInt(id))
-
-  if (postId != undefined) {
-    res.json(postId);
-  }
-  else {
-    res.status(404);
-    res.json({ error: 'Not Found', message: 'Post non trovato' });
-  }
+  const sql = 'SELECT * FROM posts WHERE id = ?';
+  connection.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Errore durante il caricamento del post. ' + err });
+    if (results.length === 0) return res.status(404).json({ error: 'Post non trovato' })
+    res.json(results[0]);
+  })
 }
 
 //creo la funzione store per creare un nuovo post
