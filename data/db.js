@@ -7,3 +7,14 @@ const connection = mysql.createConnection({
   password: 'root',
   database: 'db_blog'
 })
+
+connection.connect((err) => {
+  if (err) {
+    console.log(err)
+  }
+  else {
+    console.log('mysql connesso')
+  }
+})
+
+module.exports = connection;

@@ -1,5 +1,5 @@
 //creo posts che contiene tutti i post dell'array dentro posts.js
-const posts = require('../data/posts.js');
+const posts = require('../data/db.js');
 
 //creo la funzione index che contiene la lista di tutti i post
 const index = (req, res) => {
