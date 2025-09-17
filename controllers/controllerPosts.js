@@ -6,7 +6,7 @@ const index = (req, res) => {
   const sql = 'SELECT * FROM posts';
 
   connection.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: 'Errore: ' + err });
+    if (err) return res.status(500).json({ error: 'Errore durante il caricamento dei post. ' + err });
     res.json(results);
   })
 }
@@ -98,22 +98,13 @@ const modify = (req, res) => {
 
 //creo la funzione destroy per eliminare un post
 const destroy = (req, res) => {
-  const eliminato = req['params']['id'];
+  const id = parseInt(req.params.id)
 
-  const postEliminato = posts.find((item) => item['id'] === parseInt(eliminato))
-
-  posts.splice(posts.indexOf(postEliminato), 1);
-
-  if (postEliminato != undefined) {
-    res.status(204);
-    res.json('');
-    console.log('Lista aggiornata:');
-    console.log(posts);
-  }
-  else {
-    res.status(404);
-    res.json({ error: 'Not Found', message: 'Post non trovato' });
-  }
+  const sql = 'DELETE FROM posts WHERE id = ?';
+  connection.query(sql, [id], (err) => {
+    if (err) return res.status(500).json({ error: 'Errore durante il caricamento dei post. ' + err });
+    res.sendStatus(204)
+  })
 }
 
 module.exports = {
